@@ -1,7 +1,7 @@
 FROM nikolaik/python-nodejs:python3.11-nodejs20
 
 # 安装 gogcli（自动检测架构，支持 Apple Silicon 的 Docker）
-ARG GOG_VERSION=0.16.0
+ARG GOG_VERSION=0.22.0
 RUN ARCH=$(dpkg --print-architecture) \
     && case "$ARCH" in \
          amd64) GOG_ARCH="amd64" ;; \
