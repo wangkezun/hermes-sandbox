@@ -1,19 +1,19 @@
-FROM nikolaik/python-nodejs:python3.11-nodejs20
+FROM nousresearch/hermes-sandbox:desktop
 
 # 安装 gogcli（自动检测架构，支持 Apple Silicon 的 Docker）
-ARG GOG_VERSION=0.16.0
+ARG GOG_VERSION=0.48.0
 RUN ARCH=$(dpkg --print-architecture) \
     && case "$ARCH" in \
          amd64) GOG_ARCH="amd64" ;; \
          arm64) GOG_ARCH="arm64" ;; \
          *) echo "Unsupported arch: $ARCH" && exit 1 ;; \
        esac \
-    && cd /tmp \
-    && curl -L -o gogcli.tar.gz \
+    && GOG_TMP="$(mktemp -d)" \
+    && curl --fail --location --silent --show-error --proto '=https' --tlsv1.2 -o "$GOG_TMP/gogcli.tar.gz" \
        "https://github.com/openclaw/gogcli/releases/download/v${GOG_VERSION}/gogcli_${GOG_VERSION}_linux_${GOG_ARCH}.tar.gz" \
-    && tar -xzf gogcli.tar.gz \
-    && install -m 0755 gog /usr/local/bin/gog \
-    && rm -rf /tmp/*
+    && tar -xzf "$GOG_TMP/gogcli.tar.gz" -C "$GOG_TMP" \
+    && install -m 0755 "$GOG_TMP/gog" /usr/local/bin/gog \
+    && rm -rf "$GOG_TMP"
 
 # 安装知乎官方 CLI。安装到 /opt，避免 Hermes 挂载持久化 /root 后遮住二进制。
 ARG ZHIHU_VERSION=0.3.0

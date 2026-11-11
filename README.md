@@ -1,14 +1,18 @@
 # hermes-sandbox
 
-Docker image used as the execution sandbox for the hermes agent. Built on
-`nikolaik/python-nodejs` (Python 3.11 + Node.js 20) with [`gogcli`](https://github.com/openclaw/gogcli)
-preinstalled for Google Workspace access and the official `zhihu-cli` for
-Zhihu Open Platform skills.
+Docker image used as the execution sandbox for the Hermes agent. Built on the
+official `nousresearch/hermes-sandbox:desktop` image (Python 3.13 + Node.js 26),
+which includes Chromium, the desktop stack, `cua-driver`, and common command-line
+tools. This image adds [`gogcli`](https://github.com/openclaw/gogcli) for Google
+Workspace access and the official `zhihu-cli` for Zhihu Open Platform skills.
+
+The upstream `desktop` tag is refreshed when this image is rebuilt, so use
+`docker build --pull` when updating locally.
 
 ## Build
 
 ```sh
-docker build -t hermes-sandbox .
+docker build --pull -t wangkezun/hermes-sandbox:latest .
 ```
 
 Multi-arch is supported automatically (amd64 / arm64).
