@@ -1,7 +1,7 @@
 FROM nousresearch/hermes-sandbox:desktop
 
 # 安装 gogcli（自动检测架构，支持 Apple Silicon 的 Docker）
-ARG GOG_VERSION=0.48.0
+ARG GOG_VERSION=0.48.1
 RUN ARCH=$(dpkg --print-architecture) \
     && case "$ARCH" in \
          amd64) GOG_ARCH="amd64" ;; \
